@@ -26,6 +26,7 @@
  *  2019-06-14 - V02.50 Added user variables Power Change Report Value, Power Reporting Interval,
  *                      Current Change Report Value, Current Reporting Interval, Voltage Reporting Interval, and
  *                      Debug Logging?
+ *  2023-04-05 - v02.51 Added status report on/off at 1 (off) and 0 (on) to support Octoprint PSU query using Hubitat Maker API connection.
  */
 
 import hubitat.zigbee.zcl.DataType
@@ -277,6 +278,15 @@ def off() {
 
 def on() {
 	zigbee.on()
+}
+
+def octostatus() {
+	zigbee.onOffRefresh() +
+		if {zigbee.readAttribute(device.switch)) == "on"} {
+			"0"
+		} else {
+		"1"
+		}
 }
 
 def refresh() {
